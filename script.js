@@ -52,17 +52,14 @@ class Calculator {
                     if (this.validation.isEmpty() && this.validation.payloadIsZero(payload)) return;
                     this.operationString += payload;
                     break;
-
                 case "pop":
                     this.validation.deleteLastElement();
                     break;
-
                 case "exact-value":
                     //this case is used when the user inputs a value via keyboard
                     this.operationString = payload;
                     this.validation.fixConsecutiveOperators();
                     break;
-
                 case "allClear":
                     this.operationString = "";
                     break;
@@ -70,7 +67,6 @@ class Calculator {
                 default:
                     break;
             }
-
             this.operationString = this.operationString.replace("*", "x");
             this.display.value = this.operationString;
             if (!calculate) { this.operation.textContent = this.operationString; } //the result is displayed but operation history stays still
@@ -142,19 +138,15 @@ class Calculator {
             }
         });
     }
-
     allClear() {
         this.operationStringChangeDetector("allClear");
     }
-
     clear() {
         this.operationStringChangeDetector("pop");
     }
-
     isFloat(n) {
         return Number(n) === n && n % 1 !== 0;
     }
-
     calculate() {
         if (this.validation.lastElementIsDot() || this.validation.lastElementIsOperator()) {
             this.validation.deleteLastElement();
@@ -171,7 +163,6 @@ class Calculator {
         }
         return result;
     }
-
     equals() {
         if (this.validation.isEmpty()) return;
         this.operationStringChangeDetector("exact-value", this.calculate().toString(), true);
@@ -179,7 +170,6 @@ class Calculator {
 
     //validation helper object to validate special cases
     validation = {
-
         //check if operation string is empty
         isEmpty: () => {
             if (this.operationString.length === 0) {

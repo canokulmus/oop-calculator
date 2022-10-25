@@ -63,9 +63,6 @@ class Calculator {
                 case "allClear":
                     this.operationString = "";
                     break;
-
-                default:
-                    break;
             }
             this.operationString = this.operationString.replace("*", "x");
             this.display.value = this.operationString;
@@ -115,7 +112,6 @@ class Calculator {
 
             if ((this.validation.payloadIsNumber(e.data) || this.validation.payloadIsDot(e.data) || this.validation.payloadIsOperator(e.data)) && !this.validation.payloadIsSpace(e.data)) {
                 if (this.validation.isEmpty() && this.validation.payloadIsOperator(e.data)) {
-
                     if (e.data === "-") {
                         this.operationStringChangeDetector("push", e.data);
                     }
@@ -127,7 +123,6 @@ class Calculator {
                     this.operationStringChangeDetector("push", e.data);
                     return;
                 }
-
                 if (e.data == "*") {
                     this.operationStringChangeDetector("exact-value", this.display.value.replace("*", "x"));
                 } else {

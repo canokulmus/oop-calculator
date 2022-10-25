@@ -163,10 +163,11 @@ class Calculator {
 
         let result = Function(`return (${this.operationString})`)();
         if (this.validation.resultIsInfinity(result)) {
+            alert("Do not divide by zero!");
             return "∞";
         }
         if (this.isFloat(result)) {
-            result = result.toFixed(3);
+            result = result.toFixed(4);
         }
         return result;
     }

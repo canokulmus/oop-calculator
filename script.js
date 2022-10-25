@@ -49,7 +49,7 @@ class Calculator {
         if (this.power) {
             switch (action) {
                 case "push":
-                    if (this.validation.isEmpty() && this.validation.payloadIsZero(payload)) return;
+                    if ((this.validation.isEmpty() && this.validation.payloadIsZero(payload)) || this.operationString === "∞") return;
                     this.operationString += payload;
                     break;
                 case "pop":
@@ -57,6 +57,7 @@ class Calculator {
                     break;
                 case "exact-value":
                     //this case is used when the user inputs a value via keyboard
+                    if (this.operationString === "∞") return;
                     this.operationString = payload;
                     this.validation.fixConsecutiveOperators();
                     break;
@@ -142,25 +143,70 @@ class Calculator {
     isFloat(n) {
         return Number(n) === n && n % 1 !== 0;
     }
+    equals() {
+        if (this.validation.isEmpty()) return;
+        this.operationStringChangeDetector("exact-value", this.calculate().toString(), true);
+    }
     calculate() {
         if (this.validation.lastElementIsDot() || this.validation.lastElementIsOperator()) {
             this.validation.deleteLastElement();
         }
         this.operationString = this.operationString.replaceAll("x", "*");
+        let result = this.makeOperations(this.operationString);
 
-        let result = Function(`return (${this.operationString})`)();
+        //warning about dividing by zero
         if (this.validation.resultIsInfinity(result)) {
             alert("Do not divide by zero!");
             return "∞";
         }
         if (this.isFloat(result)) {
             result = result.toFixed(4);
+
+            //removing trailing zeros from the end after the decimal point
+            while (result[result.length - 1] === "0") {
+                result = result.slice(0, result.length - 1);
+            }
         }
         return result;
     }
-    equals() {
-        if (this.validation.isEmpty()) return;
-        this.operationStringChangeDetector("exact-value", this.calculate().toString(), true);
+    makeOperations(string) {
+        let result = 0;
+        let operationElements = string.split(/(\+|\-|\*|\/|\x)/g); //split string into array of numbers and operators (taken from Stack Overflow)
+
+        //getting operators from array
+        let operators = operationElements.filter((number) => {
+            return number == "+" || number == "-" || number == "*" || number == "/" || number == "x";
+        });
+        //getting numbers from array
+        let numbers = operationElements.filter((number) => {
+            return number != "+" && number != "-" && number != "*" && number != "/" && number != "x";
+        });
+
+        //making operations with chain of operators
+        for (let i = 0; i < numbers.length; i++) {
+            if (i == 0) {
+                result = Number(numbers[i]);
+            } else {
+                switch (operators[i - 1]) {
+                    case "+":
+                        result += Number(numbers[i]);
+                        break;
+                    case "-":
+                        result -= Number(numbers[i]);
+                        break;
+                    case "*":
+                        result *= Number(numbers[i]);
+                        break;
+                    case "/":
+                        result /= Number(numbers[i]);
+                        break;
+                    case "x":
+                        result *= Number(numbers[i]);
+                        break;
+                }
+            }
+        }
+        return result;
     }
 
     //validation helper object to validate special cases
@@ -217,4 +263,3 @@ class Calculator {
 }
 const calculator = new Calculator();
 calculator.init();
-

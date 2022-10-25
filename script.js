@@ -172,59 +172,35 @@ class Calculator {
     validation = {
         //check if operation string is empty
         isEmpty: () => {
-            if (this.operationString.length === 0) {
-                return true;
-            }
-            return false;
+            return this.operationString.length === 0
         },
         //when payload is "0" or "00"
         payloadIsZero: (data) => {
-            if (data == "0" || data == "00") {
-                return true;
-            }
-            return false;
+            return data == "0" || data == "00"
         },
         //when payload is an operator
         payloadIsOperator: (data) => {
-            if (this.OPERATORS.includes(data)) {
-                return true;
-            }
-            return false;
+            return this.OPERATORS.includes(data);
         },
         //when payload is a number
         payloadIsNumber: (data) => {
-            if (data >= 0 && data <= 9) {
-                return true;
-            }
-            return false;
+            return data >= 0 && data <= 9;
         },
         //when payload is "."
         payloadIsDot: (data) => {
-            if (data == ".") {
-                return true;
-            }
-            return false;
+            return data == ".";
         },
         //when payload is empty
         payloadIsSpace: (data) => {
-            if (data == " ") {
-                return true;
-            }
-            return false;
+            return data == " ";
         },
         //when last element is "."
         lastElementIsDot: () => {
-            if (this.operationString[this.operationString.length - 1] == ".") {
-                return true;
-            }
-            return false;
+            return this.operationString[this.operationString.length - 1] == ".";
         },
         //when the last element of operation string is an operator
         lastElementIsOperator: (data) => {
-            if (this.OPERATORS.includes(this.operationString[this.operationString.length - 1])) {
-                return true;
-            }
-            return false;
+            return this.OPERATORS.includes(this.operationString[this.operationString.length - 1]);
         },
         //delete last element of operation string
         deleteLastElement: () => {
@@ -240,10 +216,7 @@ class Calculator {
         },
         //when the result is infinity
         resultIsInfinity: (result) => {
-            if (result == Infinity) {
-                return true;
-            }
-            return false;
+            return result == Infinity;
         }
     }
 }

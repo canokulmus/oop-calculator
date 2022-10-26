@@ -75,7 +75,6 @@ class Calculator {
         if (this.validation.lastElementIsDot() && this.validation.payloadIsDot(number)) return;
         this.operationStringChangeDetector("push", number);
     }
-
     operatorClicked(operator) {
         if (this.validation.lastElementIsOperator()) {
             this.operationStringChangeDetector("pop"); //clear old operator
@@ -92,7 +91,6 @@ class Calculator {
             this.operationStringChangeDetector("push", operator);
         }
     }
-
     addEventListeners() {
         //clicking number buttons
         for (let i = 0; i < this.numberButtons.length; i++) {
